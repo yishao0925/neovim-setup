@@ -1,4 +1,29 @@
 return {
+  {
+    "jose-elias-alvarez/null-ls.nvim",
+    dependencies = { "nvim-lua/plenary.nvim" }, -- 需要的依赖
+    config = function()
+      local null_ls = require("null-ls")
+
+      -- 设置 `null-ls` 并添加 Prettier 作为格式化工具
+      null_ls.setup({
+        sources = {
+          null_ls.builtins.formatting.prettier.with({
+            condition = function(utils)
+              return utils.root_has_file({
+                ".prettierrc",
+                ".prettierrc.json",
+                ".prettierrc.js",
+                "prettier.config.js",
+                ".prettierrc.yaml",
+                ".prettierrc.yml",
+              }) or vim.fn.executable("prettier") == 1
+            end,
+          }),
+        },
+      })
+    end,
+  },
   -- tools
   {
     "williamboman/mason.nvim",
@@ -43,18 +68,6 @@ return {
     end,
   },
   -- lsp servers
-  -- tailwind-tools
-  --  {
-  --    "luckasRanarison/tailwind-tools.nvim",
-  --    name = "tailwind-tools",
-  --    build = ":UpdateRemotePlugins",
-  --    dependencies = {
-  --      "nvim-treesitter/nvim-treesitter",
-  --      "nvim-telescope/telescope.nvim", -- optional
-  --      "neovim/nvim-lspconfig", -- optional
-  --    },
-  --    opts = {}, -- your configuration
-  --  },
   {
     "neovim/nvim-lspconfig",
     opts = {
@@ -63,6 +76,11 @@ return {
       servers = {
         vtsls = { enabled = false },
         tsserver = {
+          on_attach = function(client)
+            -- 禁用 tsserver 内置的格式化功能
+            client.server_capabilities.documentFormattingProvider = false
+            vim.cmd("autocmd BufWritePost <buffer> lua vim.lsp.buf.formatting()")
+          end,
           root_dir = function(...)
             return require("lspconfig.util").root_pattern("package.json", "tsconfig.json", "jsconfig.json", ".git")(...)
           end,

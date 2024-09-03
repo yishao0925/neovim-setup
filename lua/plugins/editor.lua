@@ -139,6 +139,26 @@ return {
             preview_cutoff = 9999,
           },
         },
+        live_grep = {
+          mappings = {
+            i = {
+              ["<C-t>"] = function(prompt_bufnr)
+                local action_state = require("telescope.actions.state")
+                local entry = action_state.get_selected_entry()
+                actions.close(prompt_bufnr)
+                vim.cmd("tabedit " .. entry.path)
+              end,
+            },
+            n = {
+              ["<C-t>"] = function(prompt_bufnr)
+                local action_state = require("telescope.actions.state")
+                local entry = action_state.get_selected_entry()
+                actions.close(prompt_bufnr)
+                vim.cmd("tabedit " .. entry.path)
+              end,
+            },
+          },
+        },
       }
       opts.extensions = {
         file_browser = {
