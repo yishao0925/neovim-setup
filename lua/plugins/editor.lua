@@ -148,6 +148,10 @@ return {
                 actions.close(prompt_bufnr)
                 vim.cmd("tabedit " .. entry.path)
               end,
+              ["<C-u>"] = function(prompt_bufnr)
+                local prompt = require("telescope.actions.state").get_current_picker(prompt_bufnr).prompt_bufnr
+                vim.api.nvim_buf_set_lines(prompt, 0, -1, false, { "" })
+              end,
             },
             n = {
               ["<C-t>"] = function(prompt_bufnr)
