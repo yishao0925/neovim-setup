@@ -190,6 +190,32 @@ return {
               end,
               ["<PageUp>"] = actions.preview_scrolling_up,
               ["<PageDown>"] = actions.preview_scrolling_down,
+              ["<C-t>"] = function(prompt_bufnr)
+                local action_state = require("telescope.actions.state")
+                local picker = action_state.get_current_picker(prompt_bufnr)
+                if not picker then
+                  print("無法獲取當前 picker")
+                  return
+                end
+
+                local multi = picker:get_multi_selection()
+                if not vim.tbl_isempty(multi) then
+                  actions.close(prompt_bufnr)
+                  for _, entry in pairs(multi) do
+                    if entry.path ~= nil then
+                      vim.cmd(string.format("tabedit %s", entry.path))
+                    end
+                  end
+                else
+                  -- 如果沒有選擇檔案，則打開光標所指的檔案
+                  local entry = action_state.get_selected_entry()
+                  if entry and entry.path then
+                    vim.cmd(string.format("tabedit %s", entry.path))
+                  else
+                    print("光標所指的檔案無效")
+                  end
+                end
+              end,
             },
           },
         },
