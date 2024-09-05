@@ -119,6 +119,7 @@ return {
     config = function(_, opts)
       local telescope = require("telescope")
       local actions = require("telescope.actions")
+      local action_state = require("telescope.actions.state")
       local fb_actions = require("telescope").extensions.file_browser.actions
 
       opts.defaults = vim.tbl_deep_extend("force", opts.defaults, {
@@ -143,10 +144,31 @@ return {
           mappings = {
             i = {
               ["<C-t>"] = function(prompt_bufnr)
-                local action_state = require("telescope.actions.state")
-                local entry = action_state.get_selected_entry()
+                local picker = action_state.get_current_picker(prompt_bufnr)
+                if not picker then
+                  print("無法獲取當前 picker")
+                  return
+                end
+
+                local multi = picker:get_multi_selection()
                 actions.close(prompt_bufnr)
-                vim.cmd("tabedit " .. entry.path)
+
+                if not vim.tbl_isempty(multi) then
+                  -- 開啟所有選擇的結果
+                  for _, entry in pairs(multi) do
+                    if entry.path then
+                      vim.cmd("tabedit " .. entry.path)
+                    end
+                  end
+                else
+                  -- 如果沒有選擇結果，則開啟光標所指的結果
+                  local entry = action_state.get_selected_entry()
+                  if entry and entry.path then
+                    vim.cmd("tabedit " .. entry.path)
+                  else
+                    print("光標所指的結果無效")
+                  end
+                end
               end,
               ["<C-u>"] = function(prompt_bufnr)
                 local prompt = require("telescope.actions.state").get_current_picker(prompt_bufnr).prompt_bufnr
@@ -155,10 +177,31 @@ return {
             },
             n = {
               ["<C-t>"] = function(prompt_bufnr)
-                local action_state = require("telescope.actions.state")
-                local entry = action_state.get_selected_entry()
+                local picker = action_state.get_current_picker(prompt_bufnr)
+                if not picker then
+                  print("無法獲取當前 picker")
+                  return
+                end
+
+                local multi = picker:get_multi_selection()
                 actions.close(prompt_bufnr)
-                vim.cmd("tabedit " .. entry.path)
+
+                if not vim.tbl_isempty(multi) then
+                  -- 開啟所有選擇的結果
+                  for _, entry in pairs(multi) do
+                    if entry.path then
+                      vim.cmd("tabedit " .. entry.path)
+                    end
+                  end
+                else
+                  -- 如果沒有選擇結果，則開啟光標所指的結果
+                  local entry = action_state.get_selected_entry()
+                  if entry and entry.path then
+                    vim.cmd("tabedit " .. entry.path)
+                  else
+                    print("光標所指的結果無效")
+                  end
+                end
               end,
             },
           },
