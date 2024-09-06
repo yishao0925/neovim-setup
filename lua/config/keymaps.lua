@@ -5,6 +5,10 @@
 local keymap = vim.keymap
 local opts = { noremap = true, silent = true }
 
+-- Restore original functionality
+keymap.set("n", "H", "H", { noremap = true, silent = true })
+keymap.set("n", "L", "L", { noremap = true, silent = true })
+
 -- keymap.set({ "n", "v", "x" }, "p", '""p', { noremap = true, silent = true, desc = "Paste from clipboard" })
 keymap.set(
   "x",
