@@ -1,5 +1,23 @@
 return {
   {
+    "tpope/vim-fugitive",
+    cmd = {
+      "G",
+      "Git",
+      "Gdiffsplit",
+      "Gread",
+      "Gwrite",
+      "Ggrep",
+      "Gmove",
+      "Gdelete",
+      "Glog",
+      "Gblame",
+      "Gpush",
+      "Gpull",
+    },
+    event = "BufRead",
+  },
+  {
 
     "lewis6991/gitsigns.nvim",
     config = function()

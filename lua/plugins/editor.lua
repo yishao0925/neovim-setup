@@ -54,6 +54,19 @@ return {
         desc = "Search for a string in your current working directory and get results live as you type, respects .gitignore",
       },
       {
+        ";R",
+        function()
+          local builtin = require("telescope.builtin")
+          builtin.find_files({
+            prompt_title = "Search Folders",
+            search_dirs = { "." }, -- 根據需要指定搜索目錄
+            hidden = true, -- 包含隱藏文件夾
+            find_command = { "find", ".", "-type", "d" },
+          })
+        end,
+        desc = "Search for a directory name in project",
+      },
+      {
         "\\\\",
         function()
           local builtin = require("telescope.builtin")
