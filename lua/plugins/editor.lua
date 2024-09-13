@@ -61,7 +61,7 @@ return {
             prompt_title = "Search Folders",
             search_dirs = { "." }, -- 根據需要指定搜索目錄
             hidden = true, -- 包含隱藏文件夾
-            find_command = { "find", ".", "-type", "d" },
+            find_command = { "sh", "-c", "find . -type d | grep -v 'node_modules'" },
           })
         end,
         desc = "Search for a directory name in project",
