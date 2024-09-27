@@ -5,6 +5,12 @@
 local keymap = vim.keymap
 local opts = { noremap = true, silent = true }
 
+-- Insert 模式中使用 Ctrl + h/j/k/l 來移動光標
+vim.keymap.set("i", "<C-h>", "<Left>", { noremap = true, silent = true })
+vim.keymap.set("i", "<C-j>", "<Down>", { noremap = true, silent = true })
+vim.keymap.set("i", "<C-k>", "<Up>", { noremap = true, silent = true })
+vim.keymap.set("i", "<C-l>", "<Right>", { noremap = true, silent = true })
+
 -- Restore original functionality
 keymap.set("n", "H", "H", { noremap = true, silent = true })
 keymap.set("n", "L", "L", { noremap = true, silent = true })
@@ -75,9 +81,9 @@ keymap.set("n", "gsD", function()
 end, { noremap = true, silent = true })
 -- keymap.set({ "n", "v", "x" }, "p", '""p', { noremap = true, silent = true, desc = "Paste from clipboard" })
 -- Paste from outside
-keymap.set("n", "<leader>p", '"+p')
-keymap.set("n", "<leader>np", ":put +<CR>")
-keymap.set("n", "<leader>lp", ":put! +<CR>")
+keymap.set({ "n", "v" }, "<leader>p", '"+p')
+keymap.set({ "n", "v" }, "<leader>np", ":put +<CR>")
+keymap.set({ "n", "v" }, "<leader>lp", ":put! +<CR>")
 
 -- Increment/Decrement
 keymap.set("n", "+", "<C-a>")
@@ -121,6 +127,10 @@ keymap.set("n", "<A-k>", "ddkP")
 keymap.set("n", "<A-j>", "ddp")
 
 -- File path
+vim.keymap.set("n", "<leader>pp", function()
+  print(vim.fn.expand("%:p"))
+end, { noremap = true, silent = true })
+
 local function insertFullPath()
   local filepath = vim.fn.expand("%")
   vim.fn.setreg("+", filepath) -- write to clippoard
