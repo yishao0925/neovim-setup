@@ -6,10 +6,10 @@ local keymap = vim.keymap
 local opts = { noremap = true, silent = true }
 
 -- Insert 模式中使用 Ctrl + h/j/k/l 來移動光標
-vim.keymap.set("i", "<C-h>", "<Left>", { noremap = true, silent = true })
-vim.keymap.set("i", "<C-j>", "<Down>", { noremap = true, silent = true })
-vim.keymap.set("i", "<C-k>", "<Up>", { noremap = true, silent = true })
-vim.keymap.set("i", "<C-l>", "<Right>", { noremap = true, silent = true })
+vim.keymap.set("i", "<A-h>", "<Left>", { noremap = true, silent = true })
+vim.keymap.set("i", "<A-j>", "<Down>", { noremap = true, silent = true })
+vim.keymap.set("i", "<A-k>", "<Up>", { noremap = true, silent = true })
+vim.keymap.set("i", "<A-l>", "<Right>", { noremap = true, silent = true })
 
 -- Restore original functionality
 keymap.set("n", "H", "H", { noremap = true, silent = true })
