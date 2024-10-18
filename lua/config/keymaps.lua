@@ -6,10 +6,10 @@ local keymap = vim.keymap
 local opts = { noremap = true, silent = true }
 
 -- Insert 模式中使用 Ctrl + h/j/k/l 來移動光標
-vim.keymap.set("i", "<C-h>", "<Left>", { noremap = true, silent = true })
-vim.keymap.set("i", "<C-j>", "<Down>", { noremap = true, silent = true })
-vim.keymap.set("i", "<C-k>", "<Up>", { noremap = true, silent = true })
-vim.keymap.set("i", "<C-l>", "<Right>", { noremap = true, silent = true })
+vim.keymap.set("i", "<A-h>", "<Left>", { noremap = true, silent = true })
+vim.keymap.set("i", "<A-j>", "<Down>", { noremap = true, silent = true })
+vim.keymap.set("i", "<A-k>", "<Up>", { noremap = true, silent = true })
+vim.keymap.set("i", "<A-l>", "<Right>", { noremap = true, silent = true })
 
 -- Restore original functionality
 keymap.set("n", "H", "H", { noremap = true, silent = true })
@@ -123,8 +123,8 @@ keymap.set("n", "<C-w><right>", "<C-w>>")
 keymap.set("n", "<C-w><up>", "<C-w>+")
 keymap.set("n", "<C-w><down>", "<C-w>-")
 
-keymap.set("n", "<A-k>", "ddkP")
-keymap.set("n", "<A-j>", "ddp")
+keymap.set("n", "<C-A-k>", "ddkP")
+keymap.set("n", "<C-A-j>", "ddp")
 
 -- File path
 vim.keymap.set("n", "<leader>pp", function()
@@ -139,7 +139,19 @@ end
 keymap.set("n", "<leader>pc", insertFullPath, { noremap = true, silent = true })
 
 -- Go to definition in new tab
-vim.keymap.set("n", "gh", "<cmd>tab split | lua vim.lsp.buf.definition()<CR>", { noremap = true, silent = true })
+vim.keymap.set("n", "gh", function()
+  -- 獲取當前光標位置
+  local cursor_pos = vim.api.nvim_win_get_cursor(0)
+
+  -- 創建新 tab，並在新 tab 中複製當前 buffer
+  vim.cmd("tab split")
+
+  -- 設置光標到原來的位置
+  vim.api.nvim_win_set_cursor(0, cursor_pos)
+
+  -- 在新的 tab 中執行 LSP 定義查找
+  vim.lsp.buf.definition()
+end, { noremap = true, silent = true })
 -- keymap.set("n", "gh", function()
 --   local org_path = vim.api.nvim_buf_get_name(0)
 --
