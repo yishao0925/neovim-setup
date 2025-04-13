@@ -5,6 +5,9 @@
 local keymap = vim.keymap
 local opts = { noremap = true, silent = true }
 
+-- 禁用 macro 錄製
+vim.keymap.set("n", "q", "<Nop>", { noremap = true })
+
 -- Insert 模式中使用 Ctrl + h/j/k/l 來移動光標
 vim.keymap.set("i", "<A-h>", "<Left>", { noremap = true, silent = true })
 vim.keymap.set("i", "<A-j>", "<Down>", { noremap = true, silent = true })

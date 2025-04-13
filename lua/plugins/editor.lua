@@ -1,16 +1,36 @@
+local default_flash_config = {
+  wrap = false,
+  multi_window = false,
+  incremental = true,
+}
+
 return {
   {
-    enabled = false,
+    enabled = true,
     "folke/flash.nvim",
     ---@type Flash.Config
     opts = {
       search = {
-        forward = true,
-        multi_window = false,
-        wrap = false,
-        incremental = true,
+        multi_window = default_flash_config.multi_window,
+        wrap = default_flash_config.wrap,
+        incremental = default_flash_config.incremental,
       },
+      modes = { char = { keys = {} } }
     },
+    keys = {
+      {
+        "S",
+        mode = { "n", "x", "o" },
+        function()
+          local backward_config = vim.tbl_extend("force", default_flash_config, {
+            forward = false,
+          })
+          require("flash").jump({ search = backward_config })
+        end,
+        desc = "Flash Jump Backward"
+      },
+      { "<leader>s", mode = { "n", "x", "o" }, function() require("flash").treesitter() end, desc = "Flash Treesitter" },
+    }
   },
 
   {
@@ -51,7 +71,8 @@ return {
             additional_args = { "--hidden" },
           })
         end,
-        desc = "Search for a string in your current working directory and get results live as you type, respects .gitignore",
+        desc =
+        "Search for a string in your current working directory and get results live as you type, respects .gitignore",
       },
       {
         ";d",
@@ -60,7 +81,7 @@ return {
           builtin.find_files({
             prompt_title = "Search Folders",
             search_dirs = { "." }, -- 根據需要指定搜索目錄
-            hidden = true, -- 包含隱藏文件夾
+            hidden = true,         -- 包含隱藏文件夾
             find_command = { "sh", "-c", "find . -type d | grep -v 'node_modules'" },
           })
         end,
