@@ -1,53 +1,38 @@
 return {
-  "echasnovski/mini.sessions",
-  version = false,
-  dependencies = { "nvim-telescope/telescope.nvim" },
-  event = "VeryLazy",
-  config = function()
-    local sessions = require("mini.sessions")
+  'rmagatti/auto-session',
+  lazy = false,
+  keys = {
+    -- Will use Telescope if installed or a vim.ui.select picker otherwise
+    { '<leader>sl', '<cmd>SessionSearch<CR>',         desc = 'Session search' },
+    { '<leader>ss', '<cmd>SessionSave<CR>',           desc = 'Save session' },
+    { '<leader>wa', '<cmd>SessionToggleAutoSave<CR>', desc = 'Toggle autosave' },
+  },
 
-    sessions.setup({
-      -- 儲存 session 的資料夾
-      directory = vim.fn.stdpath("data") .. "/sessions",
-      autowrite = true,     -- 自動寫入當前 session
-      file = "session.vim", -- 預設 session 檔名
-    })
-
-    -- 自動儲存/讀取最近 session（可選）
-    vim.api.nvim_create_autocmd("VimLeavePre", {
-      callback = function()
-        sessions.write("last-session")
-      end,
-    })
-
-    vim.api.nvim_create_autocmd("VimEnter", {
-      callback = function()
-        local path = sessions.config.directory .. "/last-session.vim"
-        if vim.fn.filereadable(path) == 1 then
-          sessions.read("last-session")
-        end
-      end,
-    })
-
-    -- 快捷鍵綁定
-    vim.keymap.set("n", "<leader>sl", function()
-      sessions.select()
-    end, { desc = "載入 session（Telescope）" })
-
-    vim.keymap.set("n", "<leader>ss", function()
-      vim.ui.input({ prompt = "儲存 session 名稱：" }, function(input)
-        if input then
-          sessions.write(input)
-        end
-      end)
-    end, { desc = "儲存 session" })
-
-    vim.keymap.set("n", "<leader>sd", function()
-      vim.ui.input({ prompt = "刪除 session 名稱：" }, function(input)
-        if input then
-          sessions.delete(input)
-        end
-      end)
-    end, { desc = "刪除 session" })
-  end,
+  ---enables autocomplete for opts
+  ---@module "auto-session"
+  ---@type AutoSession.Config
+  opts = {
+    -- ⚠️ This will only work if Telescope.nvim is installed
+    -- The following are already the default values, no need to provide them if these are already the settings you want.
+    session_lens = {
+      -- If load_on_setup is false, make sure you use `:SessionSearch` to open the picker as it will initialize everything first
+      load_on_setup = true,
+      previewer = false,
+      mappings = {
+        -- Mode can be a string or a table, e.g. {"i", "n"} for both insert and normal mode
+        delete_session = { "i", "<C-D>" },
+        alternate_session = { "i", "<C-S>" },
+        copy_session = { "i", "<C-Y>" },
+      },
+      -- Can also set some Telescope picker options
+      -- For all options, see: https://github.com/nvim-telescope/telescope.nvim/blob/master/doc/telescope.txt#L112
+      theme_conf = {
+        border = true,
+        -- layout_config = {
+        --   width = 0.8, -- Can set width and height as percent of window
+        --   height = 0.5,
+        -- },
+      },
+    },
+  }
 }
