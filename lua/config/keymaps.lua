@@ -18,6 +18,19 @@ vim.keymap.set("i", "<A-l>", "<Right>", { noremap = true, silent = true })
 keymap.set("n", "H", "H", { noremap = true, silent = true })
 keymap.set("n", "L", "L", { noremap = true, silent = true })
 
+-- Delete
+local deleteOpts = { noremap = true, silent = true, desc = "Delete without affecting yank" }
+keymap.set("n", "<leader>Dd", '"_dd', deleteOpts)
+keymap.set("n", "<leader>Daw", '"_daw', deleteOpts)
+keymap.set("n", "<leader>Dw", '"_dw', deleteOpts)
+keymap.set("n", "<leader>Dw", '"_dw', deleteOpts)
+keymap.set("n", "<leader>Diw", '"_diw', deleteOpts)
+keymap.set("n", "<leader>Di(", '"_di(', deleteOpts)
+keymap.set("n", "<leader>Di{", '"_di{', deleteOpts)
+keymap.set("n", "<leader>Di\"", '"_di\"', deleteOpts)
+keymap.set("n", "<leader>Di'", '"_di\'', deleteOpts)
+keymap.set("x", "<leader>D", '"_d', opts)
+
 -- keymap.set({ "n", "v", "x" }, "p", '""p', { noremap = true, silent = true, desc = "Paste from clipboard" })
 keymap.set(
   "x",
@@ -186,6 +199,47 @@ end, opts)
 keymap.set("n", "<C-j>", function()
   vim.diagnostic.goto_next()
 end, opts)
+
+-- 切換 file
+local function jump_file_by_offset(offset)
+  local current_file = vim.fn.expand("%:t")
+  local current_dir = vim.fn.expand("%:p:h") .. "/"
+
+  -- 取得目前資料夾的所有檔案（不含資料夾）
+  local files = vim.fn.readdir(current_dir, function(name)
+    return vim.fn.isdirectory(current_dir .. name) == 0
+  end)
+
+  table.sort(files)
+
+  local current_index = nil
+  for i, file in ipairs(files) do
+    if file == current_file then
+      current_index = i
+      break
+    end
+  end
+
+  if not current_index then
+    print("⚠ 無法在當前目錄找到目前的檔案")
+    return
+  end
+
+  -- 計算新的 index，並支援循環
+  local next_index = ((current_index - 1 + offset) % #files) + 1
+  local next_file = current_dir .. files[next_index]
+
+  vim.cmd("edit " .. vim.fn.fnameescape(next_file))
+end
+
+-- 定義跳下一個 / 上一個檔案的函式
+vim.keymap.set("n", "<leader>bn", function()
+  jump_file_by_offset(1)
+end, { desc = "下一個檔案" })
+
+vim.keymap.set("n", "<leader>bp", function()
+  jump_file_by_offset(-1)
+end, { desc = "上一個檔案" })
 
 local function cowboy()
   ---@type table?
