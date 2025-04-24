@@ -43,6 +43,11 @@ return {
       "nvim-telescope/telescope-file-browser.nvim",
     },
     keys = {
+      -- 關閉預設行為讓 auto-session 使用
+      { "<leader>sl", false },
+      { "<leader>ss", false },
+      { "<leader>sa", false },
+
       {
         "<leader>fP",
         function()
