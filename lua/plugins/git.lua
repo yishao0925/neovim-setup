@@ -2,20 +2,125 @@ return {
   {
     "tpope/vim-fugitive",
     cmd = {
-      "G",
       "Git",
-      "Gdiffsplit",
-      "Gread",
-      "Gwrite",
-      "Ggrep",
-      "Gmove",
-      "Gdelete",
-      "Glog",
-      "Gblame",
-      "Gpush",
-      "Gpull",
     },
     event = "BufRead",
+    config = function()
+      -- 將輸入的 `:git` 自動展開為 `:Git`
+      vim.cmd([[
+        cnoreabbrev <expr> git getcmdtype() == ':' && getcmdline() == 'git' ? 'Git' : 'git'
+      ]])
+
+      local git_aliases = {
+        ga = "add",
+        gaa = "add --all",
+        gapa = "add --patch",
+        gau = "add --update",
+        gav = "add --verbose",
+        gwip = "add -A; git rm $(git ls-files --deleted) 2> /dev/null; git commit --no-verify --no-gpg-sign --message ",
+        gam = "am",
+        gama = "am --abort",
+        gamc = "am --continue",
+        gamscp = "am --show-current-patch",
+        gams = "am --skip",
+        gap = "apply",
+        gapt = "apply --3way",
+        gbs = "bisect",
+        gbsb = "bisect bad",
+        gbsg = "bisect good",
+        gbsn = "bisect new",
+        gbso = "bisect old",
+        gbsr = "bisect reset",
+        gbss = "bisect start",
+        gbl = "blame -w",
+        gb = "branch",
+        gba = "branch --all",
+        gbd = "branch --delete",
+        gbD = "branch --delete --force",
+        gbm = "branch --move",
+        gbnm = "branch --no-merged",
+        gbr = "branch --remote",
+        ggsup = "branch --set-upstream-to=origin/$(git_current_branch)",
+        gco = "checkout",
+        gcor = "checkout --recurse-submodules",
+        gcb = "checkout -b",
+        gcB = "checkout -B",
+        gcd = "checkout $(git_develop_branch)",
+        gcm = "checkout $(git_main_branch)",
+        gcp = "cherry-pick",
+        gcpa = "cherry-pick --abort",
+        gcpc = "cherry-pick --continue",
+        gclean = "clean --interactive -d",
+        gcl = "clone --recurse-submodules",
+        gclf = "clone --recursive --shallow-submodules --filter=blob:none --also-filter-submodules",
+        gcam = "commit --all --message",
+        gcas = "commit --all --signoff",
+        gcasm = "commit --all --signoff --message",
+        gcs = "commit --gpg-sign",
+        gcss = "commit --gpg-sign --signoff",
+        gcssm = "commit --gpg-sign --signoff --message",
+        gcmsg = "commit --message",
+        gcsm = "commit --signoff --message",
+        gc = "commit --verbose",
+        gca = "commit --verbose --all",
+        gcn = "commit --verbose --no-edit",
+        gcf = "config --list",
+        gd = "diff",
+        gdca = "diff --cached",
+        gds = "diff --staged",
+        glg = "log --stat",
+        glgp = "log --stat --patch",
+        gignored = "ls-files -v | grep ",
+        gm = "merge",
+        gma = "merge --abort",
+        gmc = "merge --continue",
+        gmom = "merge origin/$(git_main_branch)",
+        gl = "pull",
+        gpr = "pull --rebase",
+        gp = "push",
+        gpf = "push --force-with-lease",
+        gpoat = "push origin --all && git push origin --tags",
+        grev = "revert",
+        grm = "rm",
+        grmc = "rm --cached",
+        gsh = "show",
+        gst = "status",
+        gss = "status --short",
+        gsb = "status --short --branch",
+        gsw = "switch",
+        gswc = "switch --create",
+        gta = "tag --annotate",
+        gts = "tag --sign",
+        gtv = "tag | sort -V",
+      }
+
+      -- 建立合法命令（G開頭）註冊 :Gco, :Gcam 等
+      for alias, cmd in pairs(git_aliases) do
+        local command_name = alias:gsub("^%l", string.upper) -- gco -> Gco
+
+        vim.api.nvim_create_user_command(command_name, function(opts)
+          local args = table.concat(opts.fargs, " ")
+          vim.cmd("Git " .. cmd .. " " .. args)
+        end, {
+          nargs = "*",
+          desc = "Git alias for :Git " .. cmd,
+        })
+      end
+
+      -- 自動建立 cnoreabbrev 映射：輸入 gco → Gco
+      for alias, _ in pairs(git_aliases) do
+        local command_name = alias:gsub("^%l", string.upper)
+        vim.cmd(
+          string.format(
+            "cnoreabbrev <expr> %s getcmdtype() == ':' && getcmdline() == '%s' ? '%s' : '%s'",
+            alias,
+            alias,
+            command_name,
+            alias
+          )
+        )
+      end
+    end,
   },
   {
 
