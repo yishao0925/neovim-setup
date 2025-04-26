@@ -13,6 +13,13 @@ return {
     },
   },
   keys = {
+    {
+      "<leader>?",
+      function()
+        require("which-key").show({ global = false })
+      end,
+      desc = "Buffer Local Keymaps (which-key)",
+    },
     -- ╭─ Delete 群組 ─╮
     { "<leader>Dd", '"_dd', desc = "Delete line", mode = "n" },
     { "<leader>Daw", '"_daw', desc = "Delete a word", mode = "n" },
