@@ -41,6 +41,27 @@ return {
         },
       },
 
+      textobjects = {
+        select = {
+          enable = true,
+          lookahead = true,
+          keymaps = {
+            ["aj"] = "@jsx_element.outer",
+            ["ij"] = "@jsx_element.inner",
+          },
+        },
+        move = {
+          enable = true,
+          set_jumps = true, -- 記錄到 jumplist，讓你可以用 <C-o> 返回
+          goto_next_start = {
+            ["]j"] = "@jsx_element.outer",
+          },
+          goto_previous_start = {
+            ["[j"] = "@jsx_element.outer",
+          },
+        },
+      },
+
       playground = {
         enable = true,
         disable = {},

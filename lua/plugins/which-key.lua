@@ -21,17 +21,17 @@ return {
       desc = "Buffer Local Keymaps (which-key)",
     },
     -- ╭─ Delete 群組 ─╮
-    { "<leader>Dd", '"_dd', desc = "Delete line", mode = "n" },
-    { "<leader>Daw", '"_daw', desc = "Delete a word", mode = "n" },
-    { "<leader>Dw", '"_dw', desc = "Delete word (right)", mode = "n" },
-    { "<leader>Diw", '"_diw', desc = "Delete inner word", mode = "n" },
-    { "<leader>Di(", '"_di(', desc = "Delete inside ()", mode = "n" },
-    { "<leader>Di{", '"_di{', desc = "Delete inside {}", mode = "n" },
-    { '<leader>Di"', '"_di\\"', desc = 'Delete inside "', mode = "n" },
-    { "<leader>Di'", "'_di\\''", desc = "Delete inside '", mode = "n" },
+    { "<leader>Dd",  '"_dd',     desc = "Delete line",          mode = "n" },
+    { "<leader>Daw", '"_daw',    desc = "Delete a word",        mode = "n" },
+    { "<leader>Dw",  '"_dw',     desc = "Delete word (right)",  mode = "n" },
+    { "<leader>Diw", '"_diw',    desc = "Delete inner word",    mode = "n" },
+    { "<leader>Di(", '"_di(',    desc = "Delete inside ()",     mode = "n" },
+    { "<leader>Di{", '"_di{',    desc = "Delete inside {}",     mode = "n" },
+    { '<leader>Di"', '"_di\\"',  desc = 'Delete inside "',      mode = "n" },
+    { "<leader>Di'", "'_di\\''", desc = "Delete inside '",      mode = "n" },
 
     -- ╭─ Path / File 群組 ─╮
-    { "<leader>pf", '"+p', desc = "Paste from clipboard", mode = { "n", "v" } },
+    { "<leader>pf",  '"+p',      desc = "Paste from clipboard", mode = { "n", "v" } },
     {
       "<leader>pp",
       function()
@@ -48,8 +48,8 @@ return {
       desc = "Copy file path",
       mode = "n",
     },
-    { "<leader>np", ":put +<CR>", desc = "Paste below", mode = { "n", "v" } },
-    { "<leader>lp", ":put! +<CR>", desc = "Paste above", mode = { "n", "v" } },
+    { "<leader>np", ":put +<CR>",       desc = "Paste below",      mode = { "n", "v" } },
+    { "<leader>lp", ":put! +<CR>",      desc = "Paste above",      mode = { "n", "v" } },
     { "<leader>op", ":!open %:p:h<CR>", desc = "Open file folder", mode = "n" },
 
     -- ╭─ File switch 群組 ─╮
@@ -71,26 +71,26 @@ return {
     },
 
     -- ╭─ Window 群組 ─╮
-    { "<leader>ws", ":split<CR>", desc = "Horizontal Split", mode = "n" },
-    { "<leader>wv", ":vsplit<CR>", desc = "Vertical Split", mode = "n" },
-    { "<leader>wh", "<C-w>h", desc = "Move to left window", mode = "n" },
-    { "<leader>wj", "<C-w>j", desc = "Move to below window", mode = "n" },
-    { "<leader>wk", "<C-w>k", desc = "Move to upper window", mode = "n" },
-    { "<leader>wl", "<C-w>l", desc = "Move to right window", mode = "n" },
-    { "<leader>w<", "<C-w><", desc = "Decrease width", mode = "n" },
-    { "<leader>w>", "<C-w>>", desc = "Increase width", mode = "n" },
-    { "<leader>w+", "<C-w>+", desc = "Increase height", mode = "n" },
-    { "<leader>w-", "<C-w>-", desc = "Decrease height", mode = "n" },
+    { "<leader>ws", ":split<CR>",   desc = "Horizontal Split",     mode = "n" },
+    { "<leader>wv", ":vsplit<CR>",  desc = "Vertical Split",       mode = "n" },
+    { "<leader>wh", "<C-w>h",       desc = "Move to left window",  mode = "n" },
+    { "<leader>wj", "<C-w>j",       desc = "Move to below window", mode = "n" },
+    { "<leader>wk", "<C-w>k",       desc = "Move to upper window", mode = "n" },
+    { "<leader>wl", "<C-w>l",       desc = "Move to right window", mode = "n" },
+    { "<leader>w<", "<C-w><",       desc = "Decrease width",       mode = "n" },
+    { "<leader>w>", "<C-w>>",       desc = "Increase width",       mode = "n" },
+    { "<leader>w+", "<C-w>+",       desc = "Increase height",      mode = "n" },
+    { "<leader>w-", "<C-w>-",       desc = "Decrease height",      mode = "n" },
 
     -- ╭─ 行操作（Line）群組 ─╮
-    { "<leader>lk", "ddkP", desc = "Swap line up", mode = "n" },
-    { "<leader>lj", "ddp", desc = "Swap line down", mode = "n" },
+    { "<leader>lk", "ddkP",         desc = "Swap line up",         mode = "n" },
+    { "<leader>lj", "ddp",          desc = "Swap line down",       mode = "n" },
 
     -- ╭─ Tab、跳轉、LSP 等 ─╮
-    { "<C-m>", "<C-i>", desc = "Jump forward", mode = "n" },
-    { "te", ":tabedit<CR>", desc = "New tab", mode = "n" },
-    { "<tab>", ":tabnext<CR>", desc = "Next tab", mode = "n" },
-    { "<s-tab>", ":tabprev<CR>", desc = "Prev tab", mode = "n" },
+    { "<C-m>",      "<C-i>",        desc = "Jump forward",         mode = "n" },
+    { "te",         ":tabedit",     desc = "New tab",              mode = "n" },
+    { "<tab>",      ":tabnext<CR>", desc = "Next tab",             mode = "n" },
+    { "<s-tab>",    ":tabprev<CR>", desc = "Prev tab",             mode = "n" },
     {
       "gh",
       function()
