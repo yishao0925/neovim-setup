@@ -76,7 +76,15 @@ return {
     "akinsho/bufferline.nvim",
     event = "VeryLazy",
     keys = {
-      { "<Tab>", "<Cmd>BufferLineCycleNext<CR>", desc = "Next tab" },
+      -- 關閉預設映射在 which-key 設定
+      {
+        "<leader>bl", false
+      },
+      {
+        "<leader>bn", false
+      },
+
+      { "<Tab>",   "<Cmd>BufferLineCycleNext<CR>", desc = "Next tab" },
       { "<S-Tab>", "<Cmd>BufferLineCyclePrev<CR>", desc = "Prev tab" },
     },
     opts = {

@@ -47,7 +47,6 @@ return {
       { "<leader>sl", false },
       { "<leader>ss", false },
       { "<leader>sa", false },
-
       {
         "<leader>fP",
         function()
