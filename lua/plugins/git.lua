@@ -12,6 +12,7 @@ return {
       ]])
 
       local git_aliases = {
+        g = "git",
         ga = "add",
         gaa = "add --all",
         gapa = "add --patch",
@@ -68,6 +69,7 @@ return {
         gd = "diff",
         gdca = "diff --cached",
         gds = "diff --staged",
+        glo = "log --oneline",
         glg = "log --stat",
         glgp = "log --stat --patch",
         gignored = "ls-files -v | grep ",
@@ -79,6 +81,7 @@ return {
         gpr = "pull --rebase",
         gp = "push",
         gpf = "push --force-with-lease",
+        gpF = "push --force",
         gpoat = "push origin --all && git push origin --tags",
         grev = "revert",
         grm = "rm",
@@ -89,9 +92,152 @@ return {
         gsb = "status --short --branch",
         gsw = "switch",
         gswc = "switch --create",
+        grs = "git restore",
+        grst = "git restore --staged",
         gta = "tag --annotate",
         gts = "tag --sign",
         gtv = "tag | sort -V",
+        gsta = "stash",
+        gstc = "stash clear",
+        gstd = "stash drop",
+        gstl = "stash list",
+        gstp = "stash pop",
+        -- branch helpers
+        gbda =
+        "branch --no-color --merged | grep -vE \"^([+]|\\s($(git_main_branch)|$(git_develop_branch))\\s*$)\" | xargs git branch -d 2>/dev/null",
+
+        -- clone + cd helper
+        gccd = "clone --recurse-submodules \"$@\" && cd \"$(basename $_ .git)\"",
+
+        -- pristine cleanup
+        gpristine = "reset --hard && clean -dffx",
+
+        -- counts / describes
+        gcount = "shortlog -sn",
+        gdcw = "diff --cached --word-diff",
+        gdct = "describe --tags $(git rev-list --tags --max-count=1)",
+        gdt = "diff-tree --no-commit-id --name-only -r",
+        gdnolock = "diff $@ \":(exclude)package-lock.json\" \":(exclude)*.lock\"",
+        gdup = "diff @{upstream}",
+        gdv = "diff -w $@ | view -",
+        gdw = "diff --word-diff",
+
+        -- fetch / remote-tracking convenience
+        gf = "fetch",
+        gfa = "fetch --all --prune",
+        gfg = "ls-files | grep ",
+        gfo = "fetch origin",
+
+        -- gui + push/pull current branch helpers
+        gg = "gui citool",
+        gga = "gui citool --amend",
+        ggf = "push --force origin $(current_branch)",
+        ggfl = "push --force-with-lease origin $(current_branch)",
+        ggl = "pull origin $(current_branch)",
+        ggp = "push origin $(current_branch)",
+        ggpnp = "pull origin $(current_branch) && git push origin $(current_branch)",
+        ggpull = "pull origin \"$(git_current_branch)\"",
+        ggpur = "ggu",
+        ggpush = "push origin \"$(git_current_branch)\"",
+        ggu = "pull --rebase origin $(current_branch)",
+        gpsup = "push --set-upstream origin $(git_current_branch)",
+
+        -- misc helpers
+        ghh = "help",
+        gignore = "update-index --assume-unchanged",
+        gk = "gitk --all --branches &!",
+        gke = "gitk --all $(git log -g --pretty=%h) &!",
+
+        -- log flavors
+        glgg = "log --graph",
+        glgga = "log --graph --decorate --all",
+        glgm = "log --graph --max-count=10",
+        glol = "log --graph --pretty='%Cred%h%Creset -%C(auto)%d%Creset %s %Cgreen(%ar) %C(bold blue)<%an>%Creset'",
+        glols =
+        "log --graph --pretty='%Cred%h%Creset -%C(auto)%d%Creset %s %Cgreen(%ar) %C(bold blue)<%an>%Creset' --stat",
+        glod = "log --graph --pretty='%Cred%h%Creset -%C(auto)%d%Creset %s %Cgreen(%ad) %C(bold blue)<%an>%Creset'",
+        glods =
+        "log --graph --pretty='%Cred%h%Creset -%C(auto)%d%Creset %s %Cgreen(%ad) %C(bold blue)<%an>%Creset' --date=short",
+        glola =
+        "log --graph --pretty='%Cred%h%Creset -%C(auto)%d%Creset %s %Cgreen(%ar) %C(bold blue)<%an>%Creset' --all",
+        glog = "log --oneline --decorate --graph",
+        gloga = "log --oneline --decorate --graph --all",
+        glp = "log --pretty=<format>",
+
+        -- mergetool / upstream merge helpers
+        gmt = "mergetool",
+        gmtl = "mergetool --no-prompt",
+        gmtlvim = "mergetool --no-prompt --tool=vimdiff",
+        gmum = "merge upstream/$(git_main_branch)",
+
+        -- push variants
+        gpd = "push --dry-run",
+        gpu = "push upstream",
+        gpv = "push -v",
+
+        -- remote & rebase helpers
+        gr = "remote",
+        gra = "remote add",
+        grb = "rebase",
+        grba = "rebase --abort",
+        grbc = "rebase --continue",
+        grbd = "rebase $(git_develop_branch)",
+        grbi = "rebase -i",
+        grbm = "rebase $(git_main_branch)",
+        grbom = "rebase origin/$(git_main_branch)",
+        grbo = "rebase --onto",
+        grbs = "rebase --skip",
+
+        -- reset/restore/etc.
+        grh = "reset",
+        grhh = "reset --hard",
+        groh = "reset origin/$(git_current_branch) --hard",
+
+        -- remote maintenance
+        grmv = "remote rename",
+        grrm = "remote remove",
+        grset = "remote set-url",
+        grss = "restore --source",
+        grt = "cd \"$(git rev-parse --show-toplevel || echo .)\"",
+        gru = "reset --",
+        grup = "remote update",
+        grv = "remote -v",
+
+        -- svn & submodule helpers
+        gsd = "svn dcommit",
+        gsi = "submodule init",
+        gsps = "show --pretty=short --show-signature",
+        gsr = "svn rebase",
+        gsu = "submodule update",
+
+        -- stash extras
+        gsts = "stash show --text",
+        gstu = "stash --include-untracked",
+        gstall = "stash --all",
+
+        -- switch to main/develop
+        gswm = "switch $(git_main_branch)",
+        gswd = "switch $(git_develop_branch)",
+
+        -- tag list helper (function-style alias kept as string)
+        gtl = "gtl(){ git tag --sort=-v:refname -n -l ${1}* }; noglob gtl",
+
+        -- unignore / undo wip
+        gunignore = "update-index --no-assume-unchanged",
+        gunwip = "log -n 1 | grep -q -c \"--wip--\" && git reset HEAD~1",
+
+        -- pull rebase helpers
+        gup = "pull --rebase",
+        gupv = "pull --rebase -v",
+        gupa = "pull --rebase --autostash",
+        gupav = "pull --rebase --autostash -v",
+        gupom = "pull --rebase origin $(git_main_branch)",
+        gupomi = "pull --rebase=interactive origin $(git_main_branch)",
+        glum = "pull upstream $(git_main_branch)",
+        gluc = "pull upstream $(git_current_branch)",
+
+        -- history
+        gwch = "whatchanged -p --abbrev-commit --pretty=medium"
       }
 
       -- 建立合法命令（G開頭）註冊 :Gco, :Gcam 等
@@ -145,8 +291,8 @@ return {
         },
         signs_staged_enable = true,
         signcolumn = true, -- Toggle with `:Gitsigns toggle_signs`
-        numhl = false, -- Toggle with `:Gitsigns toggle_numhl`
-        linehl = false, -- Toggle with `:Gitsigns toggle_linehl`
+        numhl = false,     -- Toggle with `:Gitsigns toggle_numhl`
+        linehl = false,    -- Toggle with `:Gitsigns toggle_linehl`
         word_diff = false, -- Toggle with `:Gitsigns toggle_word_diff`
         watch_gitdir = {
           follow_files = true,
@@ -164,7 +310,7 @@ return {
         current_line_blame_formatter = "<author>, <author_time:%R> - <summary>",
         sign_priority = 6,
         update_debounce = 100,
-        status_formatter = nil, -- Use default
+        status_formatter = nil,  -- Use default
         max_file_length = 40000, -- Disable if file is longer than this (in lines)
         preview_config = {
           -- Options passed to nvim_open_win
