@@ -18,7 +18,6 @@ return {
         gapa = "add --patch",
         gau = "add --update",
         gav = "add --verbose",
-        gwip = "add -A; git rm $(git ls-files --deleted) 2> /dev/null; git commit --no-verify --no-gpg-sign --message ",
         gam = "am",
         gama = "am --abort",
         gamc = "am --continue",
@@ -82,7 +81,6 @@ return {
         gp = "push",
         gpf = "push --force-with-lease",
         gpF = "push --force",
-        gpoat = "push origin --all && git push origin --tags",
         grev = "revert",
         grm = "rm",
         grmc = "rm --cached",
@@ -92,8 +90,8 @@ return {
         gsb = "status --short --branch",
         gsw = "switch",
         gswc = "switch --create",
-        grs = "git restore",
-        grst = "git restore --staged",
+        grs = "restore",
+        grst = "restore --staged",
         gta = "tag --annotate",
         gts = "tag --sign",
         gtv = "tag | sort -V",
@@ -102,9 +100,6 @@ return {
         gstd = "stash drop",
         gstl = "stash list",
         gstp = "stash pop",
-        -- branch helpers
-        gbda =
-        "branch --no-color --merged | grep -vE \"^([+]|\\s($(git_main_branch)|$(git_develop_branch))\\s*$)\" | xargs git branch -d 2>/dev/null",
 
         -- clone + cd helper
         gccd = "clone --recurse-submodules \"$@\" && cd \"$(basename $_ .git)\"",
@@ -115,7 +110,6 @@ return {
         -- counts / describes
         gcount = "shortlog -sn",
         gdcw = "diff --cached --word-diff",
-        gdct = "describe --tags $(git rev-list --tags --max-count=1)",
         gdt = "diff-tree --no-commit-id --name-only -r",
         gdnolock = "diff $@ \":(exclude)package-lock.json\" \":(exclude)*.lock\"",
         gdup = "diff @{upstream}",
@@ -135,7 +129,6 @@ return {
         ggfl = "push --force-with-lease origin $(current_branch)",
         ggl = "pull origin $(current_branch)",
         ggp = "push origin $(current_branch)",
-        ggpnp = "pull origin $(current_branch) && git push origin $(current_branch)",
         ggpull = "pull origin \"$(git_current_branch)\"",
         ggpur = "ggu",
         ggpush = "push origin \"$(git_current_branch)\"",
@@ -146,7 +139,6 @@ return {
         ghh = "help",
         gignore = "update-index --assume-unchanged",
         gk = "gitk --all --branches &!",
-        gke = "gitk --all $(git log -g --pretty=%h) &!",
 
         -- log flavors
         glgg = "log --graph",
@@ -198,7 +190,6 @@ return {
         grrm = "remote remove",
         grset = "remote set-url",
         grss = "restore --source",
-        grt = "cd \"$(git rev-parse --show-toplevel || echo .)\"",
         gru = "reset --",
         grup = "remote update",
         grv = "remote -v",
@@ -219,12 +210,9 @@ return {
         gswm = "switch $(git_main_branch)",
         gswd = "switch $(git_develop_branch)",
 
-        -- tag list helper (function-style alias kept as string)
-        gtl = "gtl(){ git tag --sort=-v:refname -n -l ${1}* }; noglob gtl",
 
         -- unignore / undo wip
         gunignore = "update-index --no-assume-unchanged",
-        gunwip = "log -n 1 | grep -q -c \"--wip--\" && git reset HEAD~1",
 
         -- pull rebase helpers
         gup = "pull --rebase",
