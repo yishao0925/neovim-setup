@@ -144,3 +144,6 @@ keymap.set("n", "<C-A-j>", "ddp")
 -- ╰────────────────────────────────────────────────────╯
 
 keymap.set("x", "<leader>D", '"_d', { desc = "Delete selection (no yank)", silent = true, noremap = true })
+
+-- 避免 Ctrl+i 被視為 Tab
+keymap.set("n", "<C-i>", "<C-i>", { noremap = true })
