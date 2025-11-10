@@ -53,6 +53,7 @@ return {
     end,
   },
 
+  -- 訊息彈窗
   {
     "rcarriga/nvim-notify",
     opts = {

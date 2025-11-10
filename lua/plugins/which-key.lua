@@ -67,7 +67,18 @@ return {
     {
       "<leader>pp",
       function()
-        print(vim.fn.expand("%:p"))
+        local notify = require("notify")
+        notify(vim.fn.expand("%:p"), "info", {
+          title = "Current File Path",
+          timeout = false, -- 永不自動消失
+        })
+
+        -- 監聽下一個按鍵後關閉通知，並移除監聽
+        local ns = vim.api.nvim_create_namespace("NotifyDismissOnKey")
+        vim.on_key(function()
+          notify.dismiss({ silent = true, pending = true })
+          vim.on_key(nil, ns)
+        end, ns)
       end,
       desc = "Print full path",
       mode = "n",
