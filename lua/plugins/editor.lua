@@ -5,6 +5,113 @@ local default_flash_config = {
 }
 
 return {
+
+  {
+    "phaazon/hop.nvim",
+    branch = "v2",
+    config = function()
+      require("hop").setup({})
+    end,
+    keys = {
+      -- 🔹 f：向右跳
+      -- {
+      --   "f",
+      --   mode = { "n", "x", "o" },
+      --   function()
+      --     local hop = require("hop")
+      --     local directions = require("hop.hint").HintDirection
+      --     hop.hint_char1({
+      --       direction = directions.AFTER_CURSOR,
+      --       current_line_only = true,
+      --     })
+      --   end,
+      --   desc = "Hop forward to char",
+      --   remap = true,
+      -- },
+
+      -- 🔹 F：向左跳
+      -- {
+      --   "F",
+      --   mode = { "n", "x", "o" },
+      --   function()
+      --     local hop = require("hop")
+      --     local directions = require("hop.hint").HintDirection
+      --     hop.hint_char1({
+      --       direction = directions.BEFORE_CURSOR,
+      --       current_line_only = true,
+      --     })
+      --   end,
+      --   desc = "Hop backward to char",
+      --   remap = true,
+      -- },
+
+      -- 🔹 t：向右跳，停在目標字元前一格
+      -- {
+      --   "t",
+      --   mode = { "n", "x", "o" },
+      --   function()
+      --     local hop = require("hop")
+      --     local directions = require("hop.hint").HintDirection
+      --     hop.hint_char1({
+      --       direction = directions.AFTER_CURSOR,
+      --       current_line_only = true,
+      --       hint_offset = -1,
+      --     })
+      --   end,
+      --   desc = "Hop forward before char",
+      --   remap = true,
+      -- },
+
+      -- 🔹 T：向左跳，停在目標字元後一格
+      -- {
+      --   "T",
+      --   mode = { "n", "x", "o" },
+      --   function()
+      --     local hop = require("hop")
+      --     local directions = require("hop.hint").HintDirection
+      --     hop.hint_char1({
+      --       direction = directions.BEFORE_CURSOR,
+      --       current_line_only = true,
+      --       hint_offset = 1,
+      --     })
+      --   end,
+      --   desc = "Hop backward after char",
+      --   remap = true,
+      -- },
+
+      -- 🟢 s：正向多字元搜尋（可跨行）
+      {
+        "s",
+        mode = { "n", "x", "o" },
+        function()
+          local hop = require("hop")
+          local directions = require("hop.hint").HintDirection
+          hop.hint_patterns({
+            direction = directions.AFTER_CURSOR,
+            current_line_only = false, -- ✅ 跨行搜尋（整個可視範圍）
+          })
+        end,
+        desc = "Hop forward (multi-char, cross-line)",
+        remap = true,
+      },
+
+      -- 🔵 S：反向多字元搜尋（可跨行）
+      {
+        "S",
+        mode = { "n", "x", "o" },
+        function()
+          local hop = require("hop")
+          local directions = require("hop.hint").HintDirection
+          hop.hint_patterns({
+            direction = directions.BEFORE_CURSOR,
+            current_line_only = false, -- ✅ 跨行搜尋（整個可視範圍）
+          })
+        end,
+        desc = "Hop backward (multi-char, cross-line)",
+        remap = true,
+      },
+    },
+  },
   {
     enabled = true,
     "folke/flash.nvim",
@@ -15,22 +122,23 @@ return {
         wrap = default_flash_config.wrap,
         incremental = default_flash_config.incremental,
       },
-      modes = { char = { keys = {} } }
+      modes = {
+        char = {
+          enabled = false,
+        },
+      },
     },
     keys = {
+      { "s", false },
       {
-        "S",
-        mode = { "n", "x", "o" },
+        "<leader>ts",
+        mode = { "n", "x" },
         function()
-          local backward_config = vim.tbl_extend("force", default_flash_config, {
-            forward = false,
-          })
-          require("flash").jump({ search = backward_config })
+          require("flash").treesitter()
         end,
-        desc = "Flash Jump Backward"
+        desc = "Flash Treesitter",
       },
-      { "<leader>s", mode = { "n", "x", "o" }, function() require("flash").treesitter() end, desc = "Flash Treesitter" },
-    }
+    },
   },
 
   {
@@ -75,8 +183,7 @@ return {
             additional_args = { "--hidden" },
           })
         end,
-        desc =
-        "Search for a string in your current working directory and get results live as you type, respects .gitignore",
+        desc = "Search for a string in your current working directory and get results live as you type, respects .gitignore",
       },
       {
         ";d",
@@ -85,7 +192,7 @@ return {
           builtin.find_files({
             prompt_title = "Search Folders",
             search_dirs = { "." }, -- 根據需要指定搜索目錄
-            hidden = true,         -- 包含隱藏文件夾
+            hidden = true, -- 包含隱藏文件夾
             find_command = { "sh", "-c", "find . -type d | grep -v 'node_modules'" },
           })
         end,
@@ -197,7 +304,7 @@ return {
         winblend = 0,
         mappings = {
           n = { ["<c-t>"] = open_in_tab },
-          i = { ["<c-t>"] = open_in_tab }
+          i = { ["<c-t>"] = open_in_tab },
         },
       })
       opts.pickers = {
