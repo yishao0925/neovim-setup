@@ -26,7 +26,7 @@ return {
 
       -- https://github.com/nvim-treesitter/playground#query-linter
       query_linter = {
-        enable = true,
+        enable = false, -- 調試用，平常關閉以提升效能
         use_virtual_text = true,
         lint_events = { "BufWrite", "CursorHold" },
       },
@@ -63,10 +63,10 @@ return {
       },
 
       playground = {
-        enable = true,
+        enable = false, -- 調試用，需要時再開啟
         disable = {},
-        updatetime = 25,        -- Debounced time for highlighting nodes in the playground from source code
-        persist_queries = true, -- Whether the query persists across vim sessions
+        updatetime = 25,
+        persist_queries = true,
         keybindings = {
           toggle_query_editor = "o",
           toggle_hl_groups = "i",

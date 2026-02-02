@@ -130,6 +130,7 @@ return {
     },
     keys = {
       { "s", false },
+      { "S", false },
       {
         "<leader>ts",
         mode = { "n", "x" },
@@ -183,7 +184,8 @@ return {
             additional_args = { "--hidden" },
           })
         end,
-        desc = "Search for a string in your current working directory and get results live as you type, respects .gitignore",
+        desc =
+        "Search for a string in your current working directory and get results live as you type, respects .gitignore",
       },
       {
         ";d",
@@ -192,7 +194,7 @@ return {
           builtin.find_files({
             prompt_title = "Search Folders",
             search_dirs = { "." }, -- 根據需要指定搜索目錄
-            hidden = true, -- 包含隱藏文件夾
+            hidden = true,         -- 包含隱藏文件夾
             find_command = { "sh", "-c", "find . -type d | grep -v 'node_modules'" },
           })
         end,

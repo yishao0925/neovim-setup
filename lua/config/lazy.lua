@@ -43,21 +43,23 @@ require("lazy").setup({
     -- version = "*", -- try installing the latest stable version for plugins that support semver
   },
   checker = {
-    enabled = true, -- check for plugin updates periodically
-    notify = false, -- notify on update
-  },                -- automatically check for plugin updates
+    enabled = false, -- 關閉自動檢查更新以提升效能
+    notify = false,
+  },
   performance = {
     rtp = {
       -- disable some rtp plugins
       disabled_plugins = {
         "gzip",
-        -- "matchit",
-        -- "matchparen",
-        -- "netrwPlugin",
+        "matchit",
+        -- "matchparen", -- 保留括號匹配高亮
+        "netrwPlugin", -- 使用 telescope 瀏覽文件
         "tarPlugin",
         "tohtml",
         "tutor",
         "zipPlugin",
+        "rplugin",
+        "spellfile",
       },
     },
   },
