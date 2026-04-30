@@ -51,7 +51,7 @@ require("lazy").setup({
       -- disable some rtp plugins
       disabled_plugins = {
         "gzip",
-        "matchit",
+        -- "matchit",
         -- "matchparen", -- 保留括號匹配高亮
         "netrwPlugin", -- 使用 telescope 瀏覽文件
         "tarPlugin",
