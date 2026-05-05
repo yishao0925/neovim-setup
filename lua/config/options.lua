@@ -7,7 +7,6 @@ vim.opt.clipboard = ""
 vim.opt.relativenumber = false
 
 -- Performance
-vim.opt.synmaxcol = 240 -- 限制語法高亮的最大列數
 vim.opt.updatetime = 200 -- 更快的 CursorHold 觸發
 vim.opt.redrawtime = 1500 -- 語法高亮超時限制
 
